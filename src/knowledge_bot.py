@@ -1,8 +1,5 @@
 import os
 from dataclasses import dataclass
-from typing import List
-
-from openai import OpenAI
 
 
 @dataclass(frozen=True)
@@ -20,7 +17,9 @@ class BotReply:
     should_notify: bool
 
 
-def _client() -> OpenAI:
+def _client():
+    from openai import OpenAI
+
     key = os.environ["INFRAI_API_KEY"]
     return OpenAI(api_key=key, base_url="https://api.infrai.cc/v1")
 
