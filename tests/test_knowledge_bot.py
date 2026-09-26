@@ -17,8 +17,11 @@ class FakeChat:
 
 
 class FakeEmbeddings:
+    request = None
+
     @staticmethod
     def create(**kwargs):
+        FakeEmbeddings.request = kwargs
         item = type("Embedding", (), {"embedding": [0.1, 0.2]})()
         return type("Response", (), {"data": [item]})()
 
@@ -35,3 +38,7 @@ def test_delivery_answer_notifies_subscriber(monkeypatch):
     )
     assert result.answer == "Publish it after the link is tested."
     assert result.should_notify is True
+    assert FakeEmbeddings.request == {
+        "model": "text-embedding-v4",
+        "input": "Test the link first.",
+    }

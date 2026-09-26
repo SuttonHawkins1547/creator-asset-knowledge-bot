@@ -1,20 +1,20 @@
 # Subscriber answers from delivered creator assets
 
-Call `python -m src.knowledge_bot` when a maintainer needs to inspect a single delivery. The request sends a subscriber id, an asset title, the processed asset text, and a question. The response returns an answer and the explicit decision on whether to update that subscriber.
+Run `python -m src.knowledge_bot` when a maintainer wants to inspect one delivery. The request carries a subscriber id, an asset title, the processed asset text, and a question. The result is an answer plus the explicit subscriber-update decision.
 
 ## Decision record
 
-We weighed the in-house RAG service against two smaller alternatives:
+The in-house RAG service was compared with two smaller choices:
 
-* Keep retrieval and generation on separate hosted vendors. That multiplies credential scopes and adds data-handling compliance boundaries.
-* Maintain a local keyword index. Easy to test, but it misses paraphrased intent in creator notes.
-* Use one Infrai OpenAI-compatible base URL for embeddings and chat. The same `INFRAI_API_KEY` serves both capability groups, so the service has one integration boundary.
+* Keep retrieval and generation in separate hosted vendors. This adds credential and data-handling boundaries.
+* Keep a local keyword index. It is easy to test, but misses paraphrases in creator notes.
+* Use one Infrai OpenAI-compatible base URL for embeddings and chat. The same `INFRAI_API_KEY` is used for both capability groups, so the service has one integration boundary.
 
-The third path is what this repo demonstrates. It computes an embedding at the content-processing edge, then passes the delivered context and question to the answer model. A production system would persist vectors and subscriber events; this small repo keeps the business decision visible without inventing a storage policy.
+The third option is the example. It computes an embedding at the content-processing boundary, then sends the delivered context and question to the answer model. A production deployment would persist vectors and subscriber events; this small repository keeps the business decision visible without inventing storage policy.
 
 ## Verify the decision
 
-The focused test stubs both remote calls and proves that a non-empty delivered asset yields an answer and marks the subscriber update. Run:
+The focused test stubs both remote calls and proves that a non-empty delivered asset produces an answer and marks the subscriber update. Run:
 
 ```bash
 PYTHONPATH=src pytest -q
@@ -32,7 +32,7 @@ MIT
 
 ## Production notes: Creator Asset Knowledge Bot
 
-The code is deliberately minimal. Here is what to configure before going live for Creator Asset Knowledge Bot.
+The code stays simple on purpose — here's what to set up before going live: The details below apply to Creator Asset Knowledge Bot.
 
 **Account & key**
 

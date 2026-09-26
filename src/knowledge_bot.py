@@ -29,7 +29,7 @@ def process_delivery(request: DeliveryRequest) -> BotReply:
     if not request.asset_text.strip():
         raise ValueError("asset_text must contain the delivered content")
     client = _client()
-    embedding = client.embeddings.create(model="text-embedding-3-small", input=request.asset_text)
+    embedding = client.embeddings.create(model="text-embedding-v4", input=request.asset_text)
     context = f"{request.asset_title}: {request.asset_text}"
     prompt = (
         "Answer the subscriber question using only this creator asset. "
